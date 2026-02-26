@@ -1,0 +1,32 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '7.x'
+
+- script: |
+    dotnet restore ProductSellingWebsite/ProductSellingWebsite.csproj
+    dotnet build ProductSellingWebsite/ProductSellingWebsite.csproj --configuration $(buildConfiguration)
+  displayName: 'Restore & Build'
+
+- script: |
+    dotnet publish ProductSellingWebsite/ProductSellingWebsite.csproj \
+      --configuration $(buildConfiguration) \
+      --output $(Build.ArtifactStagingDirectory)/publish
+  displayName: 'Publish'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/publish'
+    artifactName: 'drop'
