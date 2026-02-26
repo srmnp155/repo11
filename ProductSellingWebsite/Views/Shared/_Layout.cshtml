@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProductSellingWebsite</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a> |
+            <a href="/Cart">Cart (@(HttpContext.Session.GetObjectFromJson<List<ProductSellingWebsite.Models.CartItem>>("Cart")?.Sum(i=>i.Quantity) ?? 0))</a>
+        </nav>
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer>
+        &copy; @DateTime.Now.Year - ProductSellingWebsite
+    </footer>
+</body>
+</html>
