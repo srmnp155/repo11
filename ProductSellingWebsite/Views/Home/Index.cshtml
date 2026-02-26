@@ -1,0 +1,16 @@
+@model IEnumerable<ProductSellingWebsite.Models.Product>
+@{
+    ViewData["Title"] = "Home";
+}
+<h2>Products</h2>
+<div class="product-list">
+    @foreach (var item in Model)
+    {
+        <div class="product-item">
+            <h3>@item.Name</h3>
+            <p>@item.Description</p>
+            <p>Price: @item.Price.ToString("C")</p>
+            <a href="@Url.Action("Details", "Product", new { id = item.Id })">View Details</a>
+        </div>
+    }
+</div>
