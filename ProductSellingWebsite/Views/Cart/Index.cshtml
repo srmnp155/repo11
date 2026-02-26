@@ -1,0 +1,41 @@
+@model List<ProductSellingWebsite.Models.CartItem>
+@{
+    ViewData["Title"] = "Your Cart";
+}
+<h2>Your Cart</h2>
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@(item.Price * item.Quantity).ToString("C")</td>
+                <td>
+                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                        <input type="hidden" name="productId" value="@item.ProductId" />
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <p><strong>Grand Total:</strong> @Model.Sum(i => i.Price * i.Quantity).ToString("C")</p>
+}
